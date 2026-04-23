@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>舒尔特表格</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app is-home" id="app" aria-live="polite">
+      <div class="home-ornaments" id="homeOrnaments"></div>
+
+      <section class="topbar">
+        <div class="title-block">
+          <h1 class="home-title" id="homeTitle" tabindex="0" data-text="舒尔特表格">舒尔特表格</h1>
+          <p class="eyebrow">Schulte Grid</p>
+        </div>
+        <div class="top-actions">
+          <button class="icon-button" id="settingsButton" type="button" aria-label="设置" title="设置">⚙</button>
+          <button class="ghost-button is-hidden" id="backButton" type="button">返回</button>
+        </div>
+      </section>
+
+      <section class="settings-panel is-hidden" id="settingsPanel" aria-labelledby="settingsTitle">
+        <div class="settings-dialog">
+          <div class="settings-head">
+            <h2 id="settingsTitle">设置</h2>
+            <button class="icon-button" id="closeSettingsButton" type="button" aria-label="关闭设置" title="关闭">×</button>
+          </div>
+
+          <div class="settings-group">
+            <p class="settings-label">棋盘大小</p>
+            <div class="segmented" id="boardSizeOptions">
+              <button type="button" data-board-size="small">小</button>
+              <button type="button" data-board-size="medium">中</button>
+              <button type="button" data-board-size="large">大</button>
+            </div>
+          </div>
+
+          <div class="settings-group">
+            <p class="settings-label">页面色调</p>
+            <div class="theme-options" id="themeOptions">
+              <button type="button" data-theme="forest"><span class="swatch forest"></span>森林</button>
+              <button type="button" data-theme="ocean"><span class="swatch ocean"></span>海洋</button>
+              <button type="button" data-theme="sun"><span class="swatch sun"></span>太阳</button>
+              <button type="button" data-theme="night"><span class="swatch night"></span>夜晚</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="difficulty-view" id="difficultyView">
+        <button class="credit-note is-hidden" id="creditNote" type="button">Made By WD</button>
+        <div class="difficulty-grid" id="difficultyGrid"></div>
+      </section>
+
+      <section class="game-view is-hidden" id="gameView">
+        <div class="playfield">
+          <div class="board-wrap">
+            <div class="board" id="board"></div>
+          </div>
+
+          <div class="metric timer-metric">
+            <span>用时</span>
+            <strong id="timer">0.00s</strong>
+          </div>
+          <small class="assist-note is-hidden" id="assistNote">漏点容错已使用</small>
+        </div>
+      </section>
+
+      <section class="result-view is-hidden" id="resultView">
+        <p class="result-label">完成用时</p>
+        <p class="result-time" id="resultTime">0.00s</p>
+        <p class="result-best" id="resultBest"></p>
+        <div class="result-actions">
+          <button class="primary-button" id="retryButton" type="button">再来一局</button>
+          <button class="ghost-button" id="chooseButton" type="button">选择难度</button>
+        </div>
+      </section>
+
+      <div class="catch-cursor" id="catchCursor" aria-hidden="true"></div>
+      <button class="pig-alert is-hidden" id="pigAlert" type="button" aria-label="粉色猪头">
+        <span class="pig-face">
+          <span class="pig-ear ear-left"></span>
+          <span class="pig-ear ear-right"></span>
+          <span class="pig-eye eye-left"></span>
+          <span class="pig-eye eye-right"></span>
+          <span class="pig-nose">
+            <span></span>
+            <span></span>
+          </span>
+          <span class="pig-tear tear-left"></span>
+          <span class="pig-tear tear-right"></span>
+        </span>
+        <span class="pig-message" id="pigMessage">要被自己蠢哭了</span>
+      </button>
+    </main>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
