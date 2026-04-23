@@ -96,6 +96,8 @@ const state = {
   assistUsed: false,
   pigMood: "hidden",
   lastPointer: { x: 0, y: 0 },
+  isTouch: false,
+  isMobileLayout: false,
   settings: { ...defaultSettings },
 };
 
@@ -172,6 +174,19 @@ function show(view) {
   gameView.classList.toggle("is-hidden", view !== "game");
   resultView.classList.toggle("is-hidden", view !== "result");
   backButton.classList.toggle("is-hidden", view === "difficulty");
+}
+
+function syncViewportMode() {
+  const isTouch =
+    window.matchMedia("(pointer: coarse)").matches ||
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0;
+  const isMobileLayout = window.matchMedia("(max-width: 720px)").matches;
+
+  state.isTouch = isTouch;
+  state.isMobileLayout = isMobileLayout;
+  app.classList.toggle("is-touch", isTouch);
+  app.classList.toggle("is-mobile-layout", isMobileLayout);
 }
 
 function setActiveOption(container, attribute, value) {
@@ -286,6 +301,7 @@ function renderBoard(size) {
   const total = size * size;
   const numbers = shuffle(Array.from({ length: total }, (_, index) => index + 1));
   board.innerHTML = "";
+  board.dataset.size = String(size);
   board.style.gridTemplateColumns = `repeat(${size}, minmax(0, 1fr))`;
   board.style.setProperty("--tile-font", `${Math.max(1.12, 4.55 - size * 0.32)}rem`);
 
@@ -518,12 +534,14 @@ pigAlert.addEventListener("click", () => {
 });
 
 homeOrnaments.addEventListener("pointerover", (event) => {
+  if (state.isTouch) return;
   if (event.target.closest(".ornament.is-interactive:not(.is-collected)")) {
     app.classList.add("is-catching");
   }
 });
 
 homeOrnaments.addEventListener("pointerout", (event) => {
+  if (state.isTouch) return;
   if (!event.relatedTarget?.closest?.(".ornament.is-interactive:not(.is-collected)")) {
     resetCatchCursor();
   }
@@ -535,6 +553,7 @@ window.addEventListener("pointermove", (event) => {
   catchCursor.style.setProperty("--cursor-y", `${event.clientY}px`);
 
   if (!app.classList.contains("is-home")) return;
+  if (state.isTouch) return;
 
   document.querySelectorAll(".ornament.is-avoid").forEach((element) => {
     const rect = element.getBoundingClientRect();
@@ -557,7 +576,10 @@ window.addEventListener("pointermove", (event) => {
   });
 });
 
+window.addEventListener("resize", syncViewportMode);
+
 state.settings = readSettings();
+syncViewportMode();
 applySettings();
 renderDifficulties();
 show("difficulty");
